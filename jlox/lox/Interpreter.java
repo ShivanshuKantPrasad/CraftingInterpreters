@@ -75,11 +75,13 @@ public class Interpreter implements Expr.Visitor<Object> {
         Object right = evaluate(expr.right);
 
         switch (expr.operator.type) {
-            case BANG:
+            case BANG -> {
                 return !isTruthy(right);
-            case MINUS:
+            }
+            case MINUS -> {
                 checkNumberOperand(expr.operator, right);
                 return -(double) right;
+            }
         }
         return null;
     }
