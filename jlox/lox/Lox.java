@@ -45,7 +45,7 @@ public class Lox {
             byte[] bytes = Files.readAllBytes(Paths.get(arg));
             run(new String(bytes, Charset.defaultCharset()));
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("File not found: " + e.getMessage());
         }
 
         // Indicate an error in the exit code.
