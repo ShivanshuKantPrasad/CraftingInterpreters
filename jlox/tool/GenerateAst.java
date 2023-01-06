@@ -18,10 +18,14 @@ public class GenerateAst {
                 "Grouping : Expr expression",
                 "Literal  : Object value",
                 "Unary    : Token operator, Expr right"
-                ));
+        ));
+        defineAst(outputDir, "Stmt", Arrays.asList(
+                "Expression : Expr expression",
+                "Print      : Expr expression"
+        ));
     }
 
-    private  static void defineAst(
+    private static void defineAst(
             String outputDir, String baseName, List<String> types
     ) throws IOException {
         String path = outputDir + "/" + baseName + ".java";
@@ -35,7 +39,7 @@ public class GenerateAst {
         defineVisitor(writer, baseName, types);
 
         //The Ast classes.
-        for (String type: types) {
+        for (String type : types) {
             String classname = type.split(":")[0].trim();
             String fields = type.split(":")[1].trim();
             defineType(writer, baseName, classname, fields);
@@ -52,7 +56,7 @@ public class GenerateAst {
     private static void defineVisitor(PrintWriter writer, String baseName, List<String> types) {
         writer.println("  interface Visitor<R> {");
 
-        for (String type: types){
+        for (String type : types) {
             String typeName = type.split(":")[0].trim();
             writer.println("    R visit" + typeName + baseName + "(" +
                     typeName + " " + baseName.toLowerCase() + ");");

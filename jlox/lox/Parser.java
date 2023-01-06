@@ -1,12 +1,16 @@
 package com.craftinginterpreters.lox;
 
+import com.jogamp.common.util.ArrayHashSet;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.craftinginterpreters.lox.TokenType.*;
 
 public class Parser {
 
-    private static class ParseError extends RuntimeException{}
+    private static class ParseError extends RuntimeException {
+    }
 
     private final List<Token> tokens;
     private int current = 0;
@@ -15,16 +19,35 @@ public class Parser {
         this.tokens = tokens;
     }
 
-    Expr parse(){
-        try {
-            return expression();
-        } catch (ParseError error) {
-            return null;
+    List<Stmt> parse() {
+        List<Stmt> statements = new ArrayList<>();
+        while (!isAtEnd()) {
+            statements.add(statement());
         }
+
+        return statements;
     }
 
     private Expr expression() {
         return equality();
+    }
+
+    private Stmt statement() {
+        if (match(PRINT)) return printStatement();
+
+        return expressionStatement();
+    }
+
+    private Stmt printStatement() {
+        Expr value = expression();
+        consume(SEMICOLON, "Expect ';' after value.");
+        return new Stmt.Print(value);
+    }
+
+    private Stmt expressionStatement() {
+        Expr expr = expression();
+        consume(SEMICOLON, "Expect ';' after expression.");
+        return new Stmt.Expression(expr);
     }
 
     private Expr equality() {
@@ -93,7 +116,7 @@ public class Parser {
             return new Expr.Literal(previous().literal);
         }
 
-        if(match(LEFT_PAREN)){
+        if (match(LEFT_PAREN)) {
             Expr expr = expression();
             consume(RIGHT_PAREN, "Expect ')' after expression.");
             return new Expr.Grouping(expr);
@@ -102,20 +125,20 @@ public class Parser {
     }
 
     private Token consume(TokenType type, String message) {
-        if(check(type)) return advance();
+        if (check(type)) return advance();
         throw error(peek(), message);
     }
 
-    private ParseError error(Token token, String message){
+    private ParseError error(Token token, String message) {
         Lox.error(token, message);
         return new ParseError();
     }
 
-    private void synchronize(){
+    private void synchronize() {
         advance();
 
         while (!isAtEnd()) {
-            if(previous().type == SEMICOLON) return;
+            if (previous().type == SEMICOLON) return;
 
             switch (peek().type) {
                 case CLASS:
@@ -161,7 +184,7 @@ public class Parser {
     }
 
     private Token advance() {
-        if(!isAtEnd()) current++;
+        if (!isAtEnd()) current++;
         return previous();
     }
 }
