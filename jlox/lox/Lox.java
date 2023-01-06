@@ -40,12 +40,12 @@ public class Lox {
 
     }
 
-    private static void runFile(String arg) throws IOException {
+    private static void runFile(String arg) {
         try {
             byte[] bytes = Files.readAllBytes(Paths.get(arg));
             run(new String(bytes, Charset.defaultCharset()));
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         // Indicate an error in the exit code.

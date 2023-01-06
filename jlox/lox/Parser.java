@@ -1,7 +1,5 @@
 package com.craftinginterpreters.lox;
 
-import com.jogamp.common.util.ArrayHashSet;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,15 +139,9 @@ public class Parser {
             if (previous().type == SEMICOLON) return;
 
             switch (peek().type) {
-                case CLASS:
-                case FUN:
-                case VAR:
-                case FOR:
-                case IF:
-                case WHILE:
-                case PRINT:
-                case RETURN:
+                case CLASS, FUN, VAR, FOR, IF, WHILE, PRINT, RETURN -> {
                     return;
+                }
             }
 
             advance();
