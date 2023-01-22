@@ -36,8 +36,6 @@ public class Lox {
             run(line);
             hadError = false;
         }
-
-
     }
 
     private static void runFile(String arg) {
