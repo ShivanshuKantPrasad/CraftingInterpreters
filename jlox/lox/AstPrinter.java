@@ -7,7 +7,7 @@ public class AstPrinter implements Expr.Visitor<String> {
 
     @Override
     public String visitAssignExpr(Expr.Assign expr) {
-        return parenthesize("=", expr);
+        return parenthesize("=", expr.value);
     }
 
     @Override
@@ -18,6 +18,11 @@ public class AstPrinter implements Expr.Visitor<String> {
     @Override
     public String visitCallExpr(Expr.Call expr) {
         return parenthesize("Function Call", expr.callee);
+    }
+
+    @Override
+    public String visitGetExpr(Expr.Get expr) {
+        return parenthesize("Get ", expr.object);
     }
 
     @Override
@@ -33,6 +38,11 @@ public class AstPrinter implements Expr.Visitor<String> {
     @Override
     public String visitLogicalExpr(Expr.Logical expr) {
         return parenthesize(expr.operator.lexeme, expr.left, expr.right);
+    }
+
+    @Override
+    public String visitSetExpr(Expr.Set expr) {
+        return parenthesize("Assign ", expr.object, expr.value);
     }
 
     @Override
