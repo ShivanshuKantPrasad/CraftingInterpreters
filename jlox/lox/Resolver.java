@@ -21,7 +21,7 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     private ClassType currentClass = ClassType.NONE;
 
     private final Interpreter interpreter;
-    private Stack<Map<String, Boolean>> scopes = new Stack<>();
+    private final Stack<Map<String, Boolean>> scopes = new Stack<>();
     private FunctionType currentFunction = FunctionType.None;
 
     public Resolver(Interpreter interpreter) {
@@ -180,7 +180,7 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     }
 
     private void beginScope() {
-        scopes.push(new HashMap<String, Boolean>());
+        scopes.push(new HashMap<>());
     }
 
     void resolve(List<Stmt> statements) {

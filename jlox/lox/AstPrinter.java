@@ -52,7 +52,7 @@ public class AstPrinter implements Expr.Visitor<String> {
 
     @Override
     public String visitThisExpr(Expr.This expr) {
-        return parenthesize("This");
+        return "this";
     }
 
     @Override
@@ -62,7 +62,7 @@ public class AstPrinter implements Expr.Visitor<String> {
 
     @Override
     public String visitVariableExpr(Expr.Variable expr) {
-        return null;
+        return expr.name.lexeme;
     }
 
     private String parenthesize(String name, Expr... exprs) {
@@ -77,6 +77,36 @@ public class AstPrinter implements Expr.Visitor<String> {
 
         return builder.toString();
     }
+
+//    private String parenthesize2(String name, Object... parts) {
+//        StringBuilder builder = new StringBuilder();
+//
+//        builder.append("(").append(name);
+//        transform(builder, parts);
+//        builder.append(")");
+//
+//        return builder.toString();
+//    }
+//
+//
+//    private void transform(StringBuilder builder, Object... parts) {
+//        for (Object part : parts) {
+//            builder.append(" ");
+//            if (part instanceof Expr) {
+//                builder.append(((Expr) part).accept(this));
+////> Statements and State omit
+//            } else if (part instanceof Stmt) {
+//                builder.append(((Stmt) part).accept(this));
+////< Statements and State omit
+//            } else if (part instanceof Token) {
+//                builder.append(((Token) part).lexeme);
+//            } else if (part instanceof List) {
+//                transform(builder, ((List<?>) part).toArray());
+//            } else {
+//                builder.append(part);
+//            }
+//        }
+//    }
 
     public static void main(String[] args) {
         Expr expression = new Expr.Binary(

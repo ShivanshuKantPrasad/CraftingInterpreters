@@ -53,7 +53,7 @@ public class Environment {
         for (int i = 0; i < distance; i++) {
             environment = environment.enclosing;
         }
-        return null;
+        return environment;
     }
 
     public void assignAt(int distance, Token name, Object value) {
